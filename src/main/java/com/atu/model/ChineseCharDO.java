@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 汉字
  * @author <a href="mailto:panhao.ph@alibaba-inc.com">mojin<a/>
  * @date 2018/05/03
  */
@@ -40,4 +41,13 @@ public class ChineseCharDO {
      * 五行属性
      */
     private String element;
+
+    @Override
+    public String toString() {
+        return chnChar
+            + "(" + pinyin + ")"
+            + "【" + element + "】"
+            + " 笔划：" + strokeNumber + "\n";
+    }
+
 }

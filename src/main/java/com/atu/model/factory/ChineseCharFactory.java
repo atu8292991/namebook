@@ -1,4 +1,4 @@
-package com.atu.model;
+package com.atu.model.factory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.atu.model.ChineseCharDO;
 import com.atu.repo.FiveElementsRepo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

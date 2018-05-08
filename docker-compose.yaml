@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nginx:
+   container_name: v-nginx
+   image: nginx:stable-alpine
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+
+  mysql:
+   container_name: v-mysql
+   image: mysql/mysql-server:5.7
+   environment:
+    MYSQL_DATABASE: namebook
+    MYSQL_ROOT_PASSWORD: password
+    MYSQL_ROOT_HOST: '%'
+   ports:
+   - "3306:3306"
+   restart: always
+
+  namebook:
+    container_name: v-namebook
+    restart: always
+    build: ./namebook
+    working_dir: /namebook
+    volumes:
+      - ./namebook:/namebook
+      - ~/.m2/repository:/root/.m2
+    expose:
+      - "8080"
+    depends_on:
+      - nginx
+      - mysql
+    command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker

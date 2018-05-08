@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSONObject;
 
 import com.google.common.base.Stopwatch;
-import lombok.experimental.Builder;
+import lombok.Builder;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;

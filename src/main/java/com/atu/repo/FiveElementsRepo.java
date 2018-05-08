@@ -37,8 +37,8 @@ public class FiveElementsRepo {
             return "";
         }
         try {
-            String gb2312 = URLEncoder.encode(chnChar, "gb2312");
-            return REQUEST_URL + gb2312 + ".htm";
+            String encodedChar = URLEncoder.encode(chnChar, "GBK");
+            return REQUEST_URL + encodedChar + ".htm";
         } catch (UnsupportedEncodingException e) {
             log.error("UnsupportedEncodingException for URLEncoder#encode. e=", e.getMessage());
             e.printStackTrace();

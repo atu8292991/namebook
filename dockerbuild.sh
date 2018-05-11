@@ -1,3 +1,4 @@
+git pull
 mvn package docker:build -DskipTests=true
 docker stop namebook
 docker rm namebook

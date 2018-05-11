@@ -29,6 +29,7 @@ public class NameApiController {
     public String batch() {
         log.info("NameApiController batch query");
         BatchNameTaskDTO batchNameTaskDTO = BatchNameTaskDTO.builder()
+            .familyName("潘")
             .gender(Gender.of(2))
             .build();
         return nameService.generateNameTask(batchNameTaskDTO);

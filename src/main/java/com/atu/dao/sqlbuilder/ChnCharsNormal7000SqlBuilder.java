@@ -40,7 +40,7 @@ public class ChnCharsNormal7000SqlBuilder {
         SQL sql = new SQL();
         sql.SELECT("*").FROM(CHN_CHARS_NORMAL_7000_TABLE_NAME);
         buildWhereCondition(sql, queryDO);
-        sql.ORDER_BY("id limit #{queryDO.offset}, #{queryDO.pageSize}");
+        sql.ORDER_BY(queryDO.getOrderBy() + " limit #{queryDO.offset}, #{queryDO.pageSize}");
         return sql.toString();
     }
 

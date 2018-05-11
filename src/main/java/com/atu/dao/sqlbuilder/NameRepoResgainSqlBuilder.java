@@ -1,6 +1,8 @@
 package com.atu.dao.sqlbuilder;
 
+import com.atu.dao.model.NameRepoResgainQueryDO;
 import com.atu.model.NameRepoResgainDO;
+import com.google.common.base.Strings;
 import org.apache.ibatis.jdbc.SQL;
 
 /**
@@ -22,5 +24,23 @@ public class NameRepoResgainSqlBuilder {
             .VALUES("detail_url", "#{nameRepoResgainDO.detailUrl}")
             .toString();
     }
+
+    public String queryByCondition(NameRepoResgainQueryDO queryDO) {
+        SQL sql = new SQL();
+        sql.SELECT("*").FROM(NAME_REPO_RESGAIN_TABLE_NAME);
+        buildWhereCondition(sql, queryDO);
+        sql.ORDER_BY(queryDO.getOrderBy() + " limit #{queryDO.offset}, #{queryDO.pageSize}");
+        return sql.toString();
+    }
+
+    private void buildWhereCondition(SQL sql, NameRepoResgainQueryDO queryDO) {
+        if (!Strings.isNullOrEmpty(queryDO.getFamilyName())) {
+            sql.WHERE("family_name=#{queryDO.familyName}");
+        }
+        if (null != queryDO.getGender()) {
+            sql.WHERE("gender=#{queryDO.gender}");
+        }
+    }
+
 
 }

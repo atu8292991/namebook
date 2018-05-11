@@ -39,5 +39,10 @@ public enum Gender {
     public boolean isGirl() {
         return GIRL.equals(this.code);
     }
+
+    @Override
+    public String toString() {
+        return "" + this.code;
+    }
     
 }

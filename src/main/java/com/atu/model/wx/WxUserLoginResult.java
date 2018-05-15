@@ -1,5 +1,6 @@
 package com.atu.model.wx;
 
+import com.atu.model.UserDO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class WxUserLoginResult {
     private boolean success;
     private String openId;
     private boolean newUser;
+    private UserDO user;
 }

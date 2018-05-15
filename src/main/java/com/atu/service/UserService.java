@@ -51,6 +51,7 @@ public class UserService {
                 .success(true)
                 .openId(wxAppUser.getOpenId())
                 .newUser(userDO == null)
+                .user(userDO)
                 .build();
         } else {
             result = WxUserLoginResult.builder()

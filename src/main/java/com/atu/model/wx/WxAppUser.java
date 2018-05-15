@@ -1,6 +1,5 @@
-package com.atu.model;
+package com.atu.model.wx;
 
-import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,9 +7,7 @@ import lombok.Data;
  * @date 2018/05/16
  */
 @Data
-@Builder
-public class WxUserLoginResult {
-    private boolean success;
+public class WxAppUser {
     private String openId;
-    private boolean newUser;
+    private String sessionKey;
 }

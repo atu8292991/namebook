@@ -1,5 +1,7 @@
 package com.atu.controller;
 
+import com.atu.model.Gender;
+import com.atu.model.UserDO;
 import com.atu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +24,27 @@ public class UserApiController {
     @RequestMapping("/login")
     public String login(@RequestParam("jsCode")String jsCode) {
         return userService.login(jsCode);
+    }
+
+    @RequestMapping("/registe")
+    public String registe(@RequestParam("nickName") String nickName,
+                          @RequestParam("openId") String openId,
+                          @RequestParam("country") String country,
+                          @RequestParam("province") String province,
+                          @RequestParam("city") String city,
+                          @RequestParam("language") String language,
+                          @RequestParam("gender") int gender,
+                          @RequestParam("avatarUrl") String avatarUrl) {
+        UserDO userDO = UserDO.builder()
+            .nickName(nickName)
+            .openId(openId)
+            .country(country)
+            .province(province)
+            .city(city)
+            .language(language)
+            .gender(Gender.of(gender))
+            .avatarUrl(avatarUrl)
+            .build();
+        return userService.registe(userDO);
     }
 }

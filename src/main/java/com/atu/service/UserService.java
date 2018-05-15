@@ -2,9 +2,12 @@ package com.atu.service;
 
 import com.alibaba.fastjson.JSON;
 
-import com.atu.model.WxAppUserDO;
-import com.atu.model.WxUserLoginResult;
+import com.atu.dao.UserDao;
+import com.atu.model.UserDO;
+import com.atu.model.wx.WxAppUser;
+import com.atu.model.wx.WxUserLoginResult;
 import com.atu.util.HttpClientUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,9 @@ public class UserService {
     @Value("${wx.app.secret}")
     private String wxAppSecret;
 
+    @Autowired
+    private UserDao userDao;
+
     public String login(String jsCode) {
         StringBuilder stringBuilder = new StringBuilder(wxLoginUrl);
         stringBuilder.append("?appid=")
@@ -39,11 +45,12 @@ public class UserService {
 
         WxUserLoginResult result;
         if (response.contains("openid")) {
-            WxAppUserDO wxAppUserDO = JSON.parseObject(response, WxAppUserDO.class);
+            WxAppUser wxAppUser = JSON.parseObject(response, WxAppUser.class);
+            UserDO userDO = userDao.queryByOpenId(wxAppUser.getOpenId());
             result = WxUserLoginResult.builder()
                 .success(true)
-                .openId(wxAppUserDO.getOpenId())
-                .newUser(true)
+                .openId(wxAppUser.getOpenId())
+                .newUser(userDO == null)
                 .build();
         } else {
             result = WxUserLoginResult.builder()
@@ -51,5 +58,10 @@ public class UserService {
                 .build();
         }
         return JSON.toJSONString(result);
+    }
+
+    public String registe(UserDO userDO) {
+        userDao.insert(userDO);
+        return "ok";
     }
 }

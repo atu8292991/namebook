@@ -24,7 +24,7 @@ public class UserSqlBuilder {
             .toString();
     }
 
-    public String queryByOpenId(long openId) {
+    public String queryByOpenId(String openId) {
         return new SQL().SELECT("*")
             .FROM(USER_TABLE_NAME)
             .WHERE("open_id = #{openId}")

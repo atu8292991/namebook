@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Value("wx.login.url")
+    @Value("${wx.login.url}")
     private String wxLoginUrl;
 
-    @Value("wx.app.id")
+    @Value("${wx.app.id}")
     private String wxAppId;
 
-    @Value("wx.app.secret")
+    @Value("${wx.app.secret}")
     private String wxAppSecret;
 
     public String login(String jsCode) {

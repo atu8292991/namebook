@@ -31,4 +31,11 @@ public class UserSqlBuilder {
             .toString();
     }
 
+    public String queryById(int id) {
+        return new SQL().SELECT("*")
+            .FROM(USER_TABLE_NAME)
+            .WHERE("id = #{id}")
+            .toString();
+    }
+
 }

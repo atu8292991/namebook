@@ -23,5 +23,8 @@ public interface UserDao {
 
     @SelectProvider(type = UserSqlBuilder.class, method = "queryByOpenId")
     UserDO queryByOpenId(@Param("openId") String openId);
+
+    @SelectProvider(type = UserSqlBuilder.class, method = "queryById")
+    UserDO queryById(@Param("id") int id);
     
 }

@@ -57,11 +57,11 @@ public class ResgainRepo {
         Set<NameRepoResgainDO> nameRepoResgainDOs = Sets.newHashSetWithExpectedSize(512);
 
         for (int pageNo = 0; pageNo <= MAX_FETCH_PAGE_NO; pageNo++) {
-            String response = HttpClientUtil.executeGet(getRequestUrl(familyNameDO.getResgainUrl(), Gender.BOY, pageNo));
-             nameRepoResgainDOs.addAll(parseNames(response, familyNameDO, Gender.BOY));
+            String response = HttpClientUtil.executeGet(getRequestUrl(familyNameDO.getResgainUrl(), Gender.MALE, pageNo));
+             nameRepoResgainDOs.addAll(parseNames(response, familyNameDO, Gender.MALE));
 
-            response = HttpClientUtil.executeGet(getRequestUrl(familyNameDO.getResgainUrl(), Gender.GIRL, pageNo));
-            nameRepoResgainDOs.addAll(parseNames(response, familyNameDO, Gender.GIRL));
+            response = HttpClientUtil.executeGet(getRequestUrl(familyNameDO.getResgainUrl(), Gender.FEMALE, pageNo));
+            nameRepoResgainDOs.addAll(parseNames(response, familyNameDO, Gender.FEMALE));
         }
 
         return nameRepoResgainDOs;

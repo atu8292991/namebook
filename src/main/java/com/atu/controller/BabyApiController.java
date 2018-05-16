@@ -25,7 +25,7 @@ public class BabyApiController {
 
     @RequestMapping("/registe")
     public String registe(@RequestParam("familyName") String familyName,
-                          @RequestParam("gender") int gender,
+                          @RequestParam("gender") String gender,
                           @RequestParam("nick") String nick,
                           @RequestParam("birthTime") Date birthTime,
                           @RequestParam("fatherId") int fatherId,

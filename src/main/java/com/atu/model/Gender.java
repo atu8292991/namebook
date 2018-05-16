@@ -8,15 +8,18 @@ import lombok.Getter;
  */
 public enum Gender {
 
-    UNKNOWN(0),
-    BOY(1),
-    GIRL(2)
+    UNKNOWN(0, "未知"),
+    MALE(1, "男"),
+    FEMALE(2, "女")
     ;
 
     @Getter
     private int code;
-    Gender(int code) {
+    private String desc;
+
+    Gender(int code, String desc) {
         this.code = code;
+        this.desc = desc;
     }
 
     public static Gender of(int code) {
@@ -28,16 +31,25 @@ public enum Gender {
         return Gender.UNKNOWN;
     }
 
+    public static Gender of(String desc) {
+        for (Gender gender : Gender.values()) {
+            if (gender.desc.equals(desc)) {
+                return gender;
+            }
+        }
+        return Gender.UNKNOWN;
+    }
+
     private boolean equals(int code) {
         return this.code == code;
     }
 
     public boolean isBoy() {
-        return BOY.equals(this.code);
+        return MALE.equals(this.code);
     }
 
     public boolean isGirl() {
-        return GIRL.equals(this.code);
+        return FEMALE.equals(this.code);
     }
 
     @Override

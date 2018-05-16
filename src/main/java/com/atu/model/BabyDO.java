@@ -24,5 +24,12 @@ public class BabyDO {
     private Date birthTime;
     private int fatherId;
     private int motherId;
-    
+
+    public int getGender() {
+        return gender.getCode();
+    }
+
+    public void setGender(int code) {
+        this.gender = Gender.of(code);
+    }
 }

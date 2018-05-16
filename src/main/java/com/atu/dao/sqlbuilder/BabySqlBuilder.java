@@ -14,12 +14,12 @@ public class BabySqlBuilder {
     public String insert(BabyDO babyDO) {
 
         return new SQL().INSERT_INTO(BABY_TABLE_NAME)
-            .VALUES("family_name", "#{babyDO.nickName}")
-            .VALUES("gender", "#{babyDO.openId}")
-            .VALUES("nick", "#{babyDO.country}")
-            .VALUES("birth_time", "#{babyDO.province}")
-            .VALUES("father_id", "#{babyDO.city}")
-            .VALUES("mother_id", "#{babyDO.gender}")
+            .VALUES("family_name", "#{babyDO.familyName}")
+            .VALUES("gender", "#{babyDO.gender}")
+            .VALUES("nick", "#{babyDO.nick}")
+            .VALUES("birth_time", "#{babyDO.birthTime}")
+            .VALUES("father_id", "#{babyDO.fatherId}")
+            .VALUES("mother_id", "#{babyDO.motherId}")
             .toString();
     }
     

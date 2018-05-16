@@ -1,6 +1,7 @@
 package com.atu.controller;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import com.atu.model.BabyDO;
 import com.atu.model.Gender;
@@ -27,17 +28,32 @@ public class BabyApiController {
     public String register(@RequestParam("familyName") String familyName,
                            @RequestParam("gender") String gender,
                            @RequestParam("nick") String nick,
-                           @RequestParam("birthTime") Date birthTime,
-                           @RequestParam("fatherId") int fatherId,
-                           @RequestParam("motherId") int motherId) {
-        BabyDO babyDO = BabyDO.builder()
-            .familyName(familyName)
-            .gender(Gender.of(gender))
-            .nick(nick)
-            .birthTime(birthTime)
-            .fatherId(fatherId)
-            .motherId(motherId)
-            .build();
+                           @RequestParam("birthTime") String birthTime,
+                           @RequestParam("userId") int userId,
+                           @RequestParam("relation") String relation) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        BabyDO babyDO = null;
+
+        try {
+            babyDO = BabyDO.builder()
+                .familyName(familyName)
+                .gender(Gender.of(gender))
+                .nick(nick)
+                .birthTime(simpleDateFormat.parse(birthTime))
+                .build();
+
+            if (relation.equals("爸爸")) {
+                babyDO.setFatherId(userId);
+            } else if (relation.equals("妈妈")) {
+                babyDO.setMotherId(userId);
+            } else {
+                log.error("father and mother are both null.");
+                return "fail";
+            }
+        } catch (ParseException e) {
+            log.error("illegal date format. date=" + birthTime);
+            return "fail";
+        }
         return babyService.register(babyDO);
     }
     

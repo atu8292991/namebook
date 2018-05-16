@@ -1,6 +1,6 @@
 package com.atu.dao;
 
-import com.atu.dao.sqlbuilder.UserSqlBuilder;
+import com.atu.dao.sqlbuilder.BabySqlBuilder;
 import com.atu.model.BabyDO;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BabyDao {
 
-    @InsertProvider(type = UserSqlBuilder.class, method = "insert")
+    @InsertProvider(type = BabySqlBuilder.class, method = "insert")
     @SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "babyDO.id", before = false,
         resultType = int.class)
     void insert(@Param("babyDO") BabyDO babyDO);

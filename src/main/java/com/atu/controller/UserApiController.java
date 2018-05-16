@@ -47,4 +47,5 @@ public class UserApiController {
             .build();
         return userService.registe(userDO);
     }
+    
 }

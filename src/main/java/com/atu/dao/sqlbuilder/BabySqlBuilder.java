@@ -22,5 +22,12 @@ public class BabySqlBuilder {
             .VALUES("mother_id", "#{babyDO.motherId}")
             .toString();
     }
+
+    public String queryByParentId(int parentId) {
+        return new SQL().SELECT("*")
+            .FROM(BABY_TABLE_NAME)
+            .WHERE("father_id = #{parentId} or mother_id = #{parentId}")
+            .toString();
+    }
     
 }

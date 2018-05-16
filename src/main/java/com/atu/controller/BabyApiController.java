@@ -8,6 +8,7 @@ import com.atu.model.Gender;
 import com.atu.service.BabyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +56,11 @@ public class BabyApiController {
             return "fail";
         }
         return babyService.register(babyDO);
+    }
+
+    @RequestMapping("/mybabies/{userId}")
+    public String myBabies(@PathVariable("userId") int userId) {
+        return babyService.queryBabyByParentId(userId);
     }
     
 }

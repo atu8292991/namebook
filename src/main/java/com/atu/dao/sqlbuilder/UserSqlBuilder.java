@@ -30,4 +30,5 @@ public class UserSqlBuilder {
             .WHERE("open_id = #{openId}")
             .toString();
     }
+
 }

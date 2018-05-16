@@ -61,7 +61,7 @@ public class UserService {
         return JSON.toJSONString(result);
     }
 
-    public String registe(UserDO userDO) {
+    public String register(UserDO userDO) {
         userDao.insert(userDO);
         return "ok";
     }

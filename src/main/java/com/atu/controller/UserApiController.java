@@ -26,15 +26,15 @@ public class UserApiController {
         return userService.login(jsCode);
     }
 
-    @RequestMapping("/registe")
-    public String registe(@RequestParam("nickName") String nickName,
-                          @RequestParam("openId") String openId,
-                          @RequestParam("country") String country,
-                          @RequestParam("province") String province,
-                          @RequestParam("city") String city,
-                          @RequestParam("language") String language,
-                          @RequestParam("gender") int gender,
-                          @RequestParam("avatarUrl") String avatarUrl) {
+    @RequestMapping("/register")
+    public String register(@RequestParam("nickName") String nickName,
+                           @RequestParam("openId") String openId,
+                           @RequestParam("country") String country,
+                           @RequestParam("province") String province,
+                           @RequestParam("city") String city,
+                           @RequestParam("language") String language,
+                           @RequestParam("gender") int gender,
+                           @RequestParam("avatarUrl") String avatarUrl) {
         UserDO userDO = UserDO.builder()
             .nickName(nickName)
             .openId(openId)
@@ -45,7 +45,7 @@ public class UserApiController {
             .gender(Gender.of(gender))
             .avatarUrl(avatarUrl)
             .build();
-        return userService.registe(userDO);
+        return userService.register(userDO);
     }
     
 }

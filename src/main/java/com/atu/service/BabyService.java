@@ -15,7 +15,7 @@ public class BabyService {
     @Autowired
     private BabyDao babyDao;
 
-    public String registe(BabyDO babyDO) {
+    public String register(BabyDO babyDO) {
         babyDao.insert(babyDO);
         return "ok";
     }

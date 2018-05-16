@@ -23,13 +23,13 @@ public class BabyApiController {
     @Autowired
     private BabyService babyService;
 
-    @RequestMapping("/registe")
-    public String registe(@RequestParam("familyName") String familyName,
-                          @RequestParam("gender") String gender,
-                          @RequestParam("nick") String nick,
-                          @RequestParam("birthTime") Date birthTime,
-                          @RequestParam("fatherId") int fatherId,
-                          @RequestParam("motherId") int motherId) {
+    @RequestMapping("/register")
+    public String register(@RequestParam("familyName") String familyName,
+                           @RequestParam("gender") String gender,
+                           @RequestParam("nick") String nick,
+                           @RequestParam("birthTime") Date birthTime,
+                           @RequestParam("fatherId") int fatherId,
+                           @RequestParam("motherId") int motherId) {
         BabyDO babyDO = BabyDO.builder()
             .familyName(familyName)
             .gender(Gender.of(gender))
@@ -38,7 +38,7 @@ public class BabyApiController {
             .fatherId(fatherId)
             .motherId(motherId)
             .build();
-        return babyService.registe(babyDO);
+        return babyService.register(babyDO);
     }
     
 }

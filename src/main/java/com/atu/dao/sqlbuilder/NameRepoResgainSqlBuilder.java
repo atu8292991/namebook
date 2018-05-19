@@ -33,6 +33,13 @@ public class NameRepoResgainSqlBuilder {
         return sql.toString();
     }
 
+    public String queryById(int id) {
+        return new SQL().SELECT("*")
+            .FROM(NAME_REPO_RESGAIN_TABLE_NAME)
+            .WHERE("id = #{id}")
+            .toString();
+    }
+
     private void buildWhereCondition(SQL sql, NameRepoResgainQueryDO queryDO) {
         if (!Strings.isNullOrEmpty(queryDO.getFamilyName())) {
             sql.WHERE("family_name=#{queryDO.familyName}");

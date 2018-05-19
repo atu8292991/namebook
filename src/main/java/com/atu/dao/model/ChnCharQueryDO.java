@@ -25,6 +25,8 @@ public class ChnCharQueryDO {
 
     private Integer minStrokeNumber;
 
+    private String chnChar;
+
     @Builder.Default
     private OrderBy orderBy = OrderBy.ID;
 

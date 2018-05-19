@@ -5,6 +5,7 @@ import com.atu.model.dto.BatchNameTaskDTO;
 import com.atu.service.NameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +34,11 @@ public class NameApiController {
             .gender(Gender.of(2))
             .build();
         return nameService.generateNameTask(batchNameTaskDTO);
+    }
+
+    @RequestMapping("/detail/resgain/{id}")
+    public String detailResgain(@PathVariable("id") int id) {
+        return nameService.fetchNameDetailResgain(id);
     }
     
 }

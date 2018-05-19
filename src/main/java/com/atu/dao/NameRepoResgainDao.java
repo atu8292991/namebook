@@ -27,4 +27,8 @@ public interface NameRepoResgainDao {
 
     @SelectProvider(type = NameRepoResgainSqlBuilder.class, method = "queryByCondition")
     List<NameRepoResgainDO> queryByCondition(@Param("queryDO") NameRepoResgainQueryDO queryDO);
+
+    @SelectProvider(type = NameRepoResgainSqlBuilder.class, method = "queryById")
+    NameRepoResgainDO queryById(@Param("id") int id);
+    
 }

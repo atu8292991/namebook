@@ -1,18 +1,27 @@
 package com.atu.repo;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.atu.dao.ChnCharsNormal7000Dao;
+import com.atu.dao.model.ChnCharQueryDO;
+import com.atu.model.ChineseCharDO;
+import com.atu.model.ChineseElement;
 import com.atu.model.ChineseFamilyNameDO;
 import com.atu.model.Gender;
+import com.atu.model.NameRepoDO;
 import com.atu.model.NameRepoResgainDO;
 import com.atu.model.factory.NameRepoResgainFactory;
 import com.atu.util.HttpClientUtil;
 import com.atu.util.ResourceReader;
 import com.atu.util.ResourceReader.LineTextCallback;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,6 +42,9 @@ public class ResgainRepo {
      * 爬取的最大页数
      */
     public static final int MAX_FETCH_PAGE_NO = 10;
+
+    @Autowired
+    private ChnCharsNormal7000Dao chnCharsNormal7000Dao;
 
     /**
      * 获取指定姓氏指定性别的第n页名字。e.g. http://zhao.resgain.net/name/girls_2.html
@@ -65,6 +77,19 @@ public class ResgainRepo {
         }
 
         return nameRepoResgainDOs;
+    }
+
+    public NameRepoDO fetchNameDetail(NameRepoResgainDO nameRepoResgainDO) {
+        String response = HttpClientUtil.executeGet(nameRepoResgainDO.getDetailUrl());
+        NameRepoDO nameRepoDO = NameRepoDO.builder()
+            .familyName(nameRepoResgainDO.getFamilyName())
+            .givenName(nameRepoResgainDO.getGivenName())
+            .nameFrom(NameRepoDO.FROM_SITE_RESGAIN)
+            .outId(nameRepoResgainDO.getId())
+            .build();
+        fillNameDetail(response, nameRepoDO);
+        fillNamePinyin(nameRepoDO);
+        return nameRepoDO;
     }
 
     private Set<NameRepoResgainDO> parseNames(String responseHtml, ChineseFamilyNameDO familyNameDO, Gender gender) {
@@ -105,6 +130,86 @@ public class ResgainRepo {
         }
         
         return nameRepoResgainDOs;
+    }
+
+    private void fillNameDetail(String responseHtml, NameRepoDO nameRepoDO) {
+
+        Map<String, Boolean> matchTagMap = Maps.newHashMap();
+        matchTagMap.put("elements", false);
+        matchTagMap.put("desc", false);
+
+        String elementsFeatureStr = "名字五行";
+        String elementsRegx = "[金|木|水|火|土]+";
+
+        String genderPctFeatureStr = "适用于男孩名";
+
+        String descFeatureStr = "姓名\"" + nameRepoDO.getFamilyName() + nameRepoDO.getGivenName() + "\"总解";
+
+        try {
+            ResourceReader.readString(responseHtml, new LineTextCallback() {
+                @Override
+                public void solve(String lineText) {
+                    if (matchTagMap.get("elements")) {
+                        Pattern elementsPattern = Pattern.compile(elementsRegx);
+                        Matcher matcher = elementsPattern.matcher(lineText);
+                        if (matcher.find()) {
+                            String elements = matcher.group();
+                            nameRepoDO.setElements(ChineseElement.encodeElementTags(elements));
+                        }
+                        matchTagMap.put("elements", false);
+                    }
+
+                    if (lineText.contains(elementsFeatureStr)) {
+                        matchTagMap.put("elements", true);
+                    }
+
+                    if (lineText.contains(genderPctFeatureStr)) {
+                        String pctRegx = "\\d+.\\d+";
+                        Pattern pctPattern = Pattern.compile(pctRegx);
+                        Matcher matcher = pctPattern.matcher(lineText);
+                        if (matcher.find()) {
+                            String pct = matcher.group();
+                            Double pctD = Double.valueOf(pct);
+                            nameRepoDO.setGenderPct((int)(pctD * 100));
+                        }
+                    }
+
+                    if (matchTagMap.get("desc")) {
+                        if (lineText.contains("strong")) {
+                            nameRepoDO.setNameDesc(lineText.replaceAll("</*strong>", "").trim());
+                            matchTagMap.put("desc", false);
+                        }
+                    }
+
+                    if (lineText.contains(descFeatureStr)) {
+                        matchTagMap.put("desc", true);
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillNamePinyin(NameRepoDO nameRepoDO) {
+        nameRepoDO.setPinyinFn(getPinyinFromString(nameRepoDO.getFamilyName()));
+        nameRepoDO.setPinyinGn(getPinyinFromString(nameRepoDO.getGivenName()));
+    }
+
+    private String getPinyinFromString(String str) {
+        StringBuilder pinyinStringBuilder = new StringBuilder();
+
+        for (int i = 0; i < str.length(); i++) {
+            String c = String.valueOf(str.charAt(i));
+            List<ChineseCharDO> chineseCharDOS = chnCharsNormal7000Dao.queryByCondition(ChnCharQueryDO.builder()
+                .chnChar(c)
+                .build());
+            if (pinyinStringBuilder.length() > 0 ) {
+                pinyinStringBuilder.append(" ");
+            }
+            pinyinStringBuilder.append(chineseCharDOS.get(0).getPinyin());
+        }
+        return pinyinStringBuilder.toString();
     }
 
 }

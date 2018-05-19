@@ -3,6 +3,7 @@ package com.atu.dao.sqlbuilder;
 import com.atu.dao.model.ChnCharQueryDO;
 import com.atu.dao.model.ChnCharUpdateDO;
 import com.atu.model.ChineseCharDO;
+import com.google.common.base.Strings;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
@@ -91,6 +92,9 @@ public class ChnCharsNormal7000SqlBuilder {
         }
         if (CollectionUtils.isNotEmpty(queryDO.getLevelTones())) {
             sql.WHERE("level_tone in ("+ StringUtils.join(queryDO.getLevelTones(), ",") + ")");
+        }
+        if (!Strings.isNullOrEmpty(queryDO.getChnChar())) {
+            sql.WHERE("chn_char = #{queryDO.chnChar}");
         }
     }
     

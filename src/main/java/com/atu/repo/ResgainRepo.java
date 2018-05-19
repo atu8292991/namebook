@@ -21,6 +21,7 @@ import com.atu.util.ResourceReader;
 import com.atu.util.ResourceReader.LineTextCallback;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -207,7 +208,11 @@ public class ResgainRepo {
             if (pinyinStringBuilder.length() > 0 ) {
                 pinyinStringBuilder.append(" ");
             }
-            pinyinStringBuilder.append(chineseCharDOS.get(0).getPinyin());
+            if (CollectionUtils.isNotEmpty(chineseCharDOS)) {
+                pinyinStringBuilder.append(chineseCharDOS.get(0).getPinyin());
+            } else {
+                pinyinStringBuilder.append("?");
+            }
         }
         return pinyinStringBuilder.toString();
     }

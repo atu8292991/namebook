@@ -36,21 +36,29 @@ public class BabyService {
         List<BabyDTO> babyDTOS = Lists.newArrayListWithExpectedSize(babyDOS.size());
 
         for (BabyDO baby : babyDOS) {
-            UserDO father = null;
-            UserDO mother = null;
-            if (baby.getFatherId() > 0) {
-                father = userDao.queryById(baby.getFatherId());
-            }
-            if (baby.getMotherId() > 0) {
-                mother = userDao.queryById(baby.getMotherId());
-            }
-            babyDTOS.add(BabyDTO.builder()
-                .baby(baby)
-                .father(father)
-                .mother(mother)
-                .build());
+            babyDTOS.add(fillBabyDTO(baby));
         }
         return JSON.toJSONString(babyDTOS);
     }
 
+    public String queryBabyById(int babyId) {
+        BabyDO babyDO = babyDao.queryById(babyId);
+        return JSON.toJSONString(fillBabyDTO(babyDO));
+    }
+
+    private BabyDTO fillBabyDTO(BabyDO babyDO){
+        UserDO father = null;
+        UserDO mother = null;
+        if (babyDO.getFatherId() > 0) {
+            father = userDao.queryById(babyDO.getFatherId());
+        }
+        if (babyDO.getMotherId() > 0) {
+            mother = userDao.queryById(babyDO.getMotherId());
+        }
+        return BabyDTO.builder()
+            .baby(babyDO)
+            .father(father)
+            .mother(mother)
+            .build();
+    }
 }

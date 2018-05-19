@@ -27,4 +27,7 @@ public interface BabyDao {
     @SelectProvider(type = BabySqlBuilder.class, method = "queryByParentId")
     List<BabyDO> queryByParentId(@Param("parentId") int parentId);
 
+    @SelectProvider(type = BabySqlBuilder.class, method = "queryById")
+    BabyDO queryById(@Param("id") int id);
+
 }

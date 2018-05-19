@@ -62,5 +62,10 @@ public class BabyApiController {
     public String myBabies(@PathVariable("userId") int userId) {
         return babyService.queryBabyByParentId(userId);
     }
+
+    @RequestMapping("/query/{babyId}")
+    public String query(@PathVariable("babyId") int babyId) {
+        return babyService.queryBabyById(babyId);
+    }
     
 }

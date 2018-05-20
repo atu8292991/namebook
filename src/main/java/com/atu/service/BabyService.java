@@ -74,6 +74,15 @@ public class BabyService {
         return "ok";
     }
 
+    public String queryRelation(int babyId, int userId) {
+        BabyRelationDO babyRelationDO = babyRelationDao.queryByUserIdAndBabyId(userId, babyId);
+        if (babyRelationDO != null) {
+            return "ok";
+        } else {
+            return "fail";
+        }
+    }
+
     private BabyDTO fillBabyDTO(BabyDO babyDO){
         UserDO father = null;
         UserDO mother = null;

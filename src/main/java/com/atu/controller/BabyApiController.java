@@ -70,6 +70,12 @@ public class BabyApiController {
         return babyService.queryBabyById(babyId);
     }
 
+    @RequestMapping("/relation/query/{babyId}")
+    public String relationQuery(@PathVariable("babyId") int babyId,
+                                @RequestParam("userId") int userId) {
+        return babyService.queryRelation(babyId, userId);
+    }
+
     @RequestMapping("/bind/{babyId}")
     public String bind(@PathVariable("babyId") int babyId,
                        @RequestParam("userId") int userId,

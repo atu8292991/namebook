@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import com.atu.model.BabyDO;
+import com.atu.model.BabyRelationDO;
 import com.atu.model.Gender;
+import com.atu.model.Kinship;
 import com.atu.service.BabyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +68,17 @@ public class BabyApiController {
     @RequestMapping("/query/{babyId}")
     public String query(@PathVariable("babyId") int babyId) {
         return babyService.queryBabyById(babyId);
+    }
+
+    @RequestMapping("/bind/{babyId}")
+    public String bind(@PathVariable("babyId") int babyId,
+                       @RequestParam("userId") int userId,
+                       @RequestParam("relation") String relation) {
+        return babyService.bind(BabyRelationDO.builder()
+            .babyId(babyId)
+            .userId(userId)
+            .relation(Kinship.of(relation))
+            .build());
     }
     
 }

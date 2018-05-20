@@ -5,8 +5,10 @@ import java.util.List;
 import com.alibaba.fastjson.JSON;
 
 import com.atu.dao.BabyDao;
+import com.atu.dao.BabyRelationDao;
 import com.atu.dao.UserDao;
 import com.atu.model.BabyDO;
+import com.atu.model.BabyRelationDO;
 import com.atu.model.UserDO;
 import com.atu.model.dto.BabyDTO;
 import com.google.common.collect.Lists;
@@ -26,6 +28,9 @@ public class BabyService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private BabyRelationDao babyRelationDao;
+
     public String register(BabyDO babyDO) {
         babyDao.insert(babyDO);
         return "ok";
@@ -44,6 +49,15 @@ public class BabyService {
     public String queryBabyById(int babyId) {
         BabyDO babyDO = babyDao.queryById(babyId);
         return JSON.toJSONString(fillBabyDTO(babyDO));
+    }
+
+    public String bind(BabyRelationDO babyRelationDO) {
+        BabyRelationDO babyRelationDOFromDb = babyRelationDao.queryByUserId(babyRelationDO.getUserId(),
+            babyRelationDO.getBabyId());
+        if (null == babyRelationDOFromDb) {
+            babyRelationDao.insert(babyRelationDO);
+        }
+        return "ok";
     }
 
     private BabyDTO fillBabyDTO(BabyDO babyDO){

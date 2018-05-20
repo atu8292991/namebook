@@ -1,5 +1,7 @@
 package com.atu.dao;
 
+import java.util.List;
+
 import com.atu.dao.sqlbuilder.BabyRelationSqlBuilder;
 import com.atu.model.BabyRelationDO;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -21,6 +23,10 @@ public interface BabyRelationDao {
         resultType = int.class)
     void insert(@Param("babyRelationDO") BabyRelationDO babyRelationDO);
 
+    @SelectProvider(type = BabyRelationSqlBuilder.class, method = "queryByUserIdAndBabyId")
+    BabyRelationDO queryByUserIdAndBabyId(@Param("userId") int userId, @Param("babyId") int babyId);
+
     @SelectProvider(type = BabyRelationSqlBuilder.class, method = "queryByUserId")
-    BabyRelationDO queryByUserId(@Param("userId") int userId, @Param("babyId") int babyId);
+    List<BabyRelationDO> queryByUserId(@Param("userId") int userId);
+
 }

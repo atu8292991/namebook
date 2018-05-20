@@ -19,10 +19,18 @@ public class BabyRelationSqlBuilder {
             .toString();
     }
 
-    public String queryByUserId(int userId, int babyId) {
+    public String queryByUserIdAndBabyId(int userId, int babyId) {
         return new SQL().SELECT("*")
             .FROM(BABY_RELATION_TABLE_NAME)
             .WHERE("user_id = #{userId} and baby_id = #{babyId}")
             .toString();
     }
+
+    public String queryByUserId(int userId) {
+        return new SQL().SELECT("*")
+            .FROM(BABY_RELATION_TABLE_NAME)
+            .WHERE("user_id = #{userId}")
+            .toString();
+    }
+
 }

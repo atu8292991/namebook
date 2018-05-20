@@ -12,6 +12,7 @@ import com.atu.model.BabyRelationDO;
 import com.atu.model.UserDO;
 import com.atu.model.dto.BabyDTO;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,19 @@ public class BabyService {
         return "ok";
     }
 
+    public String queryBabyByUserId(int userId) {
+        List<BabyRelationDO> babyRelationDOS = babyRelationDao.queryByUserId(userId);
+        List<BabyDTO> babyDTOS = Lists.newArrayListWithExpectedSize(babyRelationDOS.size());
+
+        if (CollectionUtils.isNotEmpty(babyRelationDOS)) {
+            for (BabyRelationDO babyRelationDO : babyRelationDOS) {
+                BabyDO babyDO = babyDao.queryById(babyRelationDO.getBabyId());
+                babyDTOS.add(fillBabyDTO(babyDO));
+            }
+        }
+        return JSON.toJSONString(babyDTOS);
+    }
+
     public String queryBabyByParentId(int userId) {
         List<BabyDO> babyDOS = babyDao.queryByParentId(userId);
         List<BabyDTO> babyDTOS = Lists.newArrayListWithExpectedSize(babyDOS.size());
@@ -52,7 +66,7 @@ public class BabyService {
     }
 
     public String bind(BabyRelationDO babyRelationDO) {
-        BabyRelationDO babyRelationDOFromDb = babyRelationDao.queryByUserId(babyRelationDO.getUserId(),
+        BabyRelationDO babyRelationDOFromDb = babyRelationDao.queryByUserIdAndBabyId(babyRelationDO.getUserId(),
             babyRelationDO.getBabyId());
         if (null == babyRelationDOFromDb) {
             babyRelationDao.insert(babyRelationDO);

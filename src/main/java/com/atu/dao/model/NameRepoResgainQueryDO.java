@@ -34,6 +34,9 @@ public class NameRepoResgainQueryDO {
     }
 
     public String getGender() {
+        if (null == gender) {
+            return null;
+        }
         return gender.toString();
     }
 

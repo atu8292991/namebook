@@ -25,8 +25,8 @@ public class NameManager {
     public List<NameRepoResgainDO> batchQueryByRand(BatchNameTaskDTO batchNameTaskDTO) {
         NameRepoResgainQueryDO queryDO = NameRepoResgainQueryDO.builder()
             .pageSize(BATCH_TASK_SIZE)
-            .familyName(batchNameTaskDTO.getFamilyName())
-            .gender(batchNameTaskDTO.getGender())
+            //.familyName(batchNameTaskDTO.getFamilyName())
+            //.gender(batchNameTaskDTO.getGender())
             .orderBy(OrderBy.RAND)
             .build();
         return nameRepoResgainDao.queryByCondition(queryDO);

@@ -1,6 +1,8 @@
 package com.atu.dao.sqlbuilder;
 
+import com.atu.dao.model.NameRepoQueryDO;
 import com.atu.model.NameRepoDO;
+import com.google.common.base.Strings;
 import org.apache.ibatis.jdbc.SQL;
 
 /**
@@ -22,6 +24,7 @@ public class NameRepoSqlBuilder {
             .VALUES("pinyin_fn", "#{nameRepoDO.pinyinFn}")
             .VALUES("pinyin_gn", "#{nameRepoDO.pinyinGn}")
             .VALUES("out_id", "#{nameRepoDO.outId}")
+            .VALUES("point", "#{nameRepoDO.point}")
             .toString();
     }
 
@@ -30,5 +33,22 @@ public class NameRepoSqlBuilder {
             .FROM(NAME_REPO_TABLE_NAME)
             .WHERE("out_id = #{outId}")
             .toString();
+    }
+
+    public String queryByCondition(NameRepoQueryDO queryDO) {
+        SQL sql = new SQL();
+        sql.SELECT("*").FROM(NAME_REPO_TABLE_NAME);
+        buildWhereCondition(sql, queryDO);
+        sql.ORDER_BY(queryDO.getOrderBy() + " limit #{queryDO.offset}, #{queryDO.pageSize}");
+        return sql.toString();
+    }
+
+    private void buildWhereCondition(SQL sql, NameRepoQueryDO queryDO) {
+        if (!Strings.isNullOrEmpty(queryDO.getFamilyName())) {
+            sql.WHERE("family_name=#{queryDO.familyName}");
+        }
+        if (null != queryDO.getMinPoint()) {
+            sql.WHERE("point>=#{queryDO.minPoint}");
+        }
     }
 }

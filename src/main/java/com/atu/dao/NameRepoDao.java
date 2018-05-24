@@ -1,5 +1,8 @@
 package com.atu.dao;
 
+import java.util.List;
+
+import com.atu.dao.model.NameRepoQueryDO;
 import com.atu.dao.sqlbuilder.NameRepoSqlBuilder;
 import com.atu.model.NameRepoDO;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -23,4 +26,7 @@ public interface NameRepoDao {
 
     @SelectProvider(type = NameRepoSqlBuilder.class, method = "queryByOutId")
     NameRepoDO queryByOutId(@Param("outId") int outId);
+
+    @SelectProvider(type = NameRepoSqlBuilder.class, method = "queryByCondition")
+    List<NameRepoDO> queryByCondition(@Param("queryDO") NameRepoQueryDO queryDO);
 }

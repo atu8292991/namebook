@@ -49,5 +49,12 @@ public class NameRepoResgainSqlBuilder {
         }
     }
 
+    public String queryCount(NameRepoResgainQueryDO queryDO) {
+        SQL sql = new SQL();
+        sql.SELECT("count(1)").FROM(NAME_REPO_RESGAIN_TABLE_NAME);
+        buildWhereCondition(sql, queryDO);
+        return sql.toString();
+    }
+
 
 }

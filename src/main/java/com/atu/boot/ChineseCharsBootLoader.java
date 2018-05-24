@@ -4,10 +4,11 @@ import java.util.Set;
 
 import com.atu.dao.ChnCharsNormal7000Dao;
 import com.atu.dao.ChnFamilyNameDao;
+import com.atu.dao.NameRepoDao;
 import com.atu.dao.NameRepoResgainDao;
-import com.atu.dao.model.ChnFamilyNameQueryDO;
 import com.atu.model.ChineseCharDO;
 import com.atu.model.ChineseFamilyNameDO;
+import com.atu.model.NameRepoDO;
 import com.atu.model.factory.ChineseCharFactory;
 import com.atu.model.factory.ChineseFamilyNameFactory;
 import com.atu.repo.ResgainRepo;
@@ -33,11 +34,14 @@ public class ChineseCharsBootLoader implements InitializingBean {
     @Value("${chinese.familyname.bootloader.init}")
     private boolean needInitFamilyName;
 
-    @Autowired               
+    @Autowired
     private ChnCharsNormal7000Dao chnCharsNormal7000Dao;
 
     @Autowired
     private ChnFamilyNameDao chnFamilyNameDao;
+
+    @Autowired
+    private NameRepoDao nameRepoDao;
 
     @Autowired
     private ResgainRepo resgainRepo;
@@ -79,20 +83,69 @@ public class ChineseCharsBootLoader implements InitializingBean {
                 });
         }
 
-        ChnFamilyNameQueryDO queryDO = ChnFamilyNameQueryDO.builder().build();
+        //ChnCharQueryDO queryDO = ChnCharQueryDO.builder()
+        //    .elements(Sets.newHashSet(ChineseElement.METAL, ChineseElement.WOOD)).build();
+        //
+        //int count = chnCharsNormal7000Dao.queryCount(queryDO);
+        //
+        //int maxPageNo = (count % queryDO.getPageSize() == 0)
+        //    ? count / queryDO.getPageSize()
+        //    : count / queryDO.getPageSize() + 1;
+        //
+        //do {
+        //    List<ChineseCharDO> chineseCharDOS = chnCharsNormal7000Dao.queryByCondition(queryDO);
+        //    chineseCharDOS.stream()
+        //        .forEach(p -> {
+        //                NameRepoDO name = generateName("潘", "敖", p.getChnChar());
+        //                name.setNameFrom(NameRepoDO.FROM_AI);
+        //                name.setPoint(ChaRepo.getInstance().fetchPoint(name));
+        //                log.error("name=" + name.getFamilyName() + name.getGivenName() + ", point=" + name.getPoint()
+        //                + ", " + queryDO.getPageNo() + "/" + maxPageNo);
+        //                if (name.getPoint() > 70) {
+        //                    nameRepoDao.insert(name);
+        //                }
+        //            }
+        //        );
+        //    queryDO.setPageNo(queryDO.getPageNo() + 1);
+        //} while (queryDO.getPageNo() <= maxPageNo);
 
-        int count = chnFamilyNameDao.queryCount(queryDO);
 
-        int maxPageNo = (count % queryDO.getPageSize() == 0)
-            ? count / queryDO.getPageSize()
-            : count / queryDO.getPageSize() + 1;
+        //NameRepoResgainQueryDO queryDO = NameRepoResgainQueryDO.builder()
+        //    .gender(Gender.FEMALE)
+        //    .build();
+        //
+        //int count = nameRepoResgainDao.queryCount(queryDO);
+        //
+        //int maxPageNo = (count % queryDO.getPageSize() == 0)
+        //    ? count / queryDO.getPageSize()
+        //    : count / queryDO.getPageSize() + 1;
+        //
+        //do {
+        //    List<NameRepoResgainDO> nameRepoResgainDOS = nameRepoResgainDao.queryByCondition(queryDO);
+        //    nameRepoResgainDOS.stream()
+        //        .forEach(p -> {
+        //                NameRepoDO name = generateName("潘", p.getGivenName());
+        //                name.setNameFrom(NameRepoDO.FROM_AI);
+        //                name.setPoint(ChaRepo.getInstance().fetchPoint(name));
+        //                log.error("name=" + name.getFamilyName() + name.getGivenName() + ", point=" + name.getPoint()
+        //                + ", " + queryDO.getPageNo() + "/" + maxPageNo);
+        //                if (name.getPoint() > 70) {
+        //                    nameRepoDao.insert(name);
+        //                }
+        //            }
+        //        );
+        //    queryDO.setPageNo(queryDO.getPageNo() + 1);
+        //} while (queryDO.getPageNo() <= maxPageNo);
+
+
 
         //do {
         //    List<ChineseFamilyNameDO> chineseFamilyNameDOS = chnFamilyNameDao.queryByCondition(queryDO);
         //    for (ChineseFamilyNameDO chineseFamilyNameDO : chineseFamilyNameDOS) {
         //        log.info("[" + chineseFamilyNameDO.getFamilyName() + "]: " + "start to fetch names.");
         //        Set<NameRepoResgainDO> nameRepoResgainDOS = resgainRepo.fetchNames(chineseFamilyNameDO);
-        //        log.info("[" + chineseFamilyNameDO.getFamilyName() + "]: " + nameRepoResgainDOS.size() + " names fetched.");
+        //        log.info("[" + chineseFamilyNameDO.getFamilyName() + "]: " + nameRepoResgainDOS.size() + " names
+        // fetched.");
         //        nameRepoResgainDOS.forEach(nameRepoResgainDao::insert);
         //    }
         //    queryDO.setPageNo(queryDO.getPageNo() + 1);
@@ -125,6 +178,18 @@ public class ChineseCharsBootLoader implements InitializingBean {
         //    queryDO.setPageNo(queryDO.getPageNo() + 1);
         //} while (queryDO.getPageNo() <= maxPageNo);
 
+    }
+
+    private NameRepoDO generateName(String familyName, String middle, String last) {
+        return NameRepoDO.builder()
+            .familyName(familyName)
+            .givenName(middle + last).build();
+    }
+
+    private NameRepoDO generateName(String familyName, String givenName) {
+        return NameRepoDO.builder()
+            .familyName(familyName)
+            .givenName(givenName).build();
     }
 
 }

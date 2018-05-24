@@ -3,6 +3,7 @@ package com.atu.model;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
+import lombok.Getter;
 
 /**
  * 五行
@@ -22,6 +23,7 @@ public enum ChineseElement {
     EARTH("土", 1 << 4)
     ;
 
+    @Getter
     private String name;
     private int tag;
 

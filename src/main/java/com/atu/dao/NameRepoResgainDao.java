@@ -30,5 +30,8 @@ public interface NameRepoResgainDao {
 
     @SelectProvider(type = NameRepoResgainSqlBuilder.class, method = "queryById")
     NameRepoResgainDO queryById(@Param("id") int id);
+
+    @SelectProvider(type = NameRepoResgainSqlBuilder.class, method = "queryCount")
+    int queryCount(@Param("queryDO") NameRepoResgainQueryDO queryDO);
     
 }

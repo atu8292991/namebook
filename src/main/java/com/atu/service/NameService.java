@@ -58,7 +58,7 @@ public class NameService {
     }
 
     public String generateNameTask(BatchNameTaskDTO batchNameTaskDTO) {
-        List<NameRepoResgainDO> names = nameManager.batchQueryByRand(batchNameTaskDTO);
+        List<NameRepoDO> names = nameManager.batchQueryByRand();
         return JSON.toJSONString(names);
     }
 

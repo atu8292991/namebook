@@ -29,4 +29,5 @@ public class NameRepoDO {
     private String pinyinFn;
     private String pinyinGn;
     private int outId;
+    private int point;
 }
